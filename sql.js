@@ -2,6 +2,8 @@ const mysql = require('mysql2/promise');
 
 const connection = mysql.createPool({
     host: 'localhost',
+
+    
     user: 'root',
     // change to the real dataBase 
     database: 'joblog',
@@ -11,5 +13,4 @@ const connection = mysql.createPool({
 });
 
 module.exports = connection;
-
 

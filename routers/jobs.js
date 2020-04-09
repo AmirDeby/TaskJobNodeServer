@@ -1,11 +1,17 @@
 const express = require('express');
 const jobRouter = express.Router();
-const { addJobLog, deleteJob, toggleComplete, getTasksByUserId } = require('../queries');
+const { addJobLog, deleteJob, toggleComplete, getTasksByUserId, getTaskJobs } = require('../queries');
 
-// use token 
+
+jobRouter.get('/', async (req, res) => {
+    const [result] = await getTaskJobs();
+
+    res.send(result);
+})
+
 jobRouter.get('/me', async (req, res) => {
 
-    const { userId } = req.params;  
+    const { userId } = req.user;
 
     const [result] = await getTasksByUserId(userId);
 
@@ -13,14 +19,16 @@ jobRouter.get('/me', async (req, res) => {
 })
 
 jobRouter.post('/', async (req, res) => {
-    const { description, date, userId } = req.body;
+
+    const { description, date } = req.body;
+    const { userId } = req.user;
+    console.log(userId);
 
     const [result] = await addJobLog(description, date, userId);
 
     const jobId = result.insertId;
 
     res.send({ id: jobId });
-
 })
 
 jobRouter.delete('/:id', async (req, res) => {
