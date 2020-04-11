@@ -16,12 +16,12 @@ const addJobLog = (description, date, userId) => {
     return db.execute("INSERT INTO `joblog`.`tasks` (`description`, `date`, `Completed`,userId) VALUES (?,?,0,?)", [description, date, userId])
 }
 
-const deleteJob = (id) => {
-    return db.execute("DELETE FROM joblog.tasks WHERE (id = ?)", [id]);
+const deleteJob = (id,userId) => {
+    return db.execute("DELETE FROM joblog.tasks WHERE (id = ?) and userId = ?", [id,userId]);
 }
 
-const toggleComplete = (id) => {
-    return db.execute(`UPDATE joblog.tasks SET Completed = NOT Completed  WHERE id = ?`, [id]);
+const toggleComplete = (id, userId) => {
+    return db.execute(`UPDATE joblog.tasks SET Completed = NOT Completed  WHERE id = ? and userId = ? `, [id, userId]);
 }
 
 const getTasksByUserId = (userId) => {
@@ -31,4 +31,4 @@ const login = (userName, password) => {
     return db.execute(' SELECT * FROM joblog.users WHERE userName=? and password= ?', [userName, password])
 }
 
-module.exports = { getUsers, addUser, addJobLog, deleteJob, toggleComplete, getTasksByUserId, login,getTaskJobs }
+module.exports = { getUsers, addUser, addJobLog, deleteJob, toggleComplete, getTasksByUserId, login, getTaskJobs }

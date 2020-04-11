@@ -42,12 +42,10 @@ app.post('/login', async (req, res) => {
     const [result] = await login(userName, password);
     const [user] = result;
 
-    
     if (!user) {
         res.status(401).send('incorrect user name or password')
         return;
     }
-    
     const userId = user.id
     
     jwt.sign({ userId }, SECRET, (err, token) => {
